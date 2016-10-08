@@ -19,41 +19,41 @@ con.connect(function(err) {
 
 var actions = {
   messages: {
-    GET: function() {
+    get: function(callback) {
       con.query('SELECT text, username FROM messages', function(err, rows) {
-        if (err) {
-          throw err;
-        } 
-        return rows;
+        // if (err) {
+        //   throw err;
+        // } 
+        callback(rows);
       });
       
     },
-    POST: function(results) {
+    post: function(reqBody, callback) {
+      console.log('hey');
       con.query('INSERT INTO messages (text, username, roomname) VALUES (' + 
-        results.message + ', ' + results.username + ', ' + results.roomname + ')', 
+        reqBody.message + ', ' + reqBody.username + ', ' + reqBody.roomname + ')', 
         function(err, rows) {
           if (err) {
-            throw err;
+            callback('cannot post message');
           }
         });
     }  
   },
   users: {
-    GET: function() {
+    get: function(callback) {
       con.query('SELECT name FROM users', function(err, rows) {
-        if (err) {
-          throw err;
-        } 
-        // not definite
-        return rows;
-      });
-      
+        // if (err) {
+        //   throw err;
+        // } 
+        callback(rows);
+      });  
     },
-    POST: function(results) {
-      con.query('INSERT INTO users (name) VALUES (' + results.username + ')', 
+    post: function(reqBody, callback) {
+      console.log('hey users');
+      con.query('INSERT INTO users (name) VALUES (' + reqBody.username + ')', 
         function(err, rows) {
           if (err) {
-            throw err;
+            callback('cannot post user');
           }
         });
     } 
@@ -63,3 +63,5 @@ var actions = {
 
 
 con.end(function(err) {});
+
+module.exports.actions = actions;
