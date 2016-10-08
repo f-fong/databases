@@ -1,16 +1,23 @@
 var db = require('../db');
-var mysql = require('mysql');
 
 module.exports = {
   messages: {
-    get: function () {}, // a function which produces all the messages
-    post: function () {} // a function which can be used to insert a message into the database
+    get: function (results) {
+      actions.messages.get();
+    }, // a function which produces all the messages
+    post: function (results) {
+      actions.messages.post(results);
+    } // a function which can be used to insert a message into the database
   },
 
   users: {
     // Ditto as above.
-    get: function () {},
-    post: function () {}
+    get: function (results) {
+      actions.users.get();
+    },
+    post: function (results) {
+      actions.users.post(results);
+    }
   }
 };
 
