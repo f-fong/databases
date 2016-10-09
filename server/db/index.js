@@ -20,7 +20,7 @@ con.connect(function(err) {
 var actions = {
   messages: {
     get: function(callback) {
-      con.query('SELECT text, username FROM messages', function(err, rows) {
+      con.query('SELECT text, username FROM messages;', function(err, rows) {
         // if (err) {
         //   throw err;
         // } 
@@ -29,19 +29,22 @@ var actions = {
       
     },
     post: function(reqBody, callback) {
-      console.log('hey');
-      con.query('INSERT INTO messages (text, username, roomname) VALUES (' + 
-        reqBody.message + ', ' + reqBody.username + ', ' + reqBody.roomname + ')', 
+      var queryStr = "INSERT INTO messages (text, username, roomname) VALUES ('" + 
+        reqBody.message + "', '" + reqBody.username + "', '" + reqBody.roomname + "');";
+      console.log('queryStr: ' + queryStr);
+      con.query(queryStr, 
         function(err, rows) {
           if (err) {
             callback('cannot post message');
+          } else {
+            callback.status(200).end();
           }
         });
     }  
   },
   users: {
     get: function(callback) {
-      con.query('SELECT name FROM users', function(err, rows) {
+      con.query('SELECT name FROM users;', function(err, rows) {
         // if (err) {
         //   throw err;
         // } 
@@ -50,10 +53,12 @@ var actions = {
     },
     post: function(reqBody, callback) {
       console.log('hey users');
-      con.query('INSERT INTO users (name) VALUES (' + reqBody.username + ')', 
+      con.query('INSERT INTO users (name) VALUES (' + reqBody.username + ');', 
         function(err, rows) {
           if (err) {
             callback('cannot post user');
+          } else {
+            callback.status(200).end();
           }
         });
     } 
@@ -65,3 +70,4 @@ var actions = {
 con.end(function(err) {});
 
 module.exports.actions = actions;
+module.exports.con = con;

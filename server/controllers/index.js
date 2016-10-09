@@ -14,9 +14,10 @@ module.exports = {
         if (err) {
           res.statusCode = 404;
           res.send(JSON.stringify({'error': err}));
+        } else {
+          res.statusCode = 201;
+          res.send();
         }
-        res.statusCode = 201;
-        res.send();
       });
     } // a function which handles posting a message to the database
   },
@@ -34,10 +35,12 @@ module.exports = {
       models.messages.post(req.body, function(err) {
         if (err) {
           res.statusCode = 404;
-          res.send(JSON.stringify({'error': err}));
+          res.json(err);
+        } else {
+          res.statusCode = 201;
+          res.send();
+          
         }
-        res.statusCode = 201;
-        res.send();
       });    
     }
   }
